@@ -6,10 +6,12 @@ const app = express()
 const mongoose = require('mongoose')
 const PORT = process.env.PORT || 4001
 const pageRoute = require('./routes/pageRoutes')
+const authRoute = require('./routes/authRoutes')
 const dbURI = 'mongodb://localhost/jwt';
 
 // Middlewares 
 app.use(express.static('public'))
+app.use(express.json())
 // Database connection
 mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex:true })
     .then(()=> {
@@ -20,7 +22,9 @@ mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true, useCr
 // view engine
 app.set('view engine', 'ejs')
 // routes
+app.use(authRoute)
 app.use(pageRoute)
+
 
 
 
