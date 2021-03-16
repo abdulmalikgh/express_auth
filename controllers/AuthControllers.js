@@ -15,6 +15,18 @@ const handleErrors = (err) => {
 
     const errors = { email:'', password:''}
 
+    if(err.message === 'Incorrect Email') {
+
+        errors.email = 'Email not registered'
+
+    }
+
+    if(err.message === 'Incorrect Password') {
+
+        errors.password = "Incorrect Password"
+
+    }
+
     if(err.code === 11000) {
 
         errors.email = "This email is already registered"
@@ -49,11 +61,13 @@ module.exports.signup_post = async (req, res) => {
         
         const user = await User.create({email, password})
         
-        const token = createToken( user.id )
+        const token = createToken( user._id )
 
         res.cookie('token', token, {httpOnly: true, maxAge : 1000 * maxAge})
 
-        res.status(201).json({'id': user.id})
+        res.status(201).json({'id': user._id})
+
+        
 
     } catch (err) {
        
@@ -74,6 +88,22 @@ module.exports.login_post = async (req, res) => {
 
     const { email, password } = req.body
     
-    res.send('login')
+    try {
+       
+        const user = await User.login(email, password)
 
-}
+        const token = createToken(user._id)
+
+        res.cookie('token', token, {httpOnly: true, maxAge: 1000 * maxAge})
+
+        res.status(200).json({user})
+
+    } catch (error) {
+
+        const errors = handleErrors(error)
+
+        res.status(400).json({errors})
+
+    }
+
+}   
