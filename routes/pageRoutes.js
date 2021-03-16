@@ -7,5 +7,4 @@ const { home, smoothies } = require('../controllers/PageControllers')
 router.get('/', home)
 
 router.get('/smoothies', smoothies)
-
 module.exports = router
