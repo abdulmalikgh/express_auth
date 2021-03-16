@@ -1,6 +1,5 @@
 // top level imports
 const express = require('express')
-
 // top level variables
 const app = express()
 const mongoose = require('mongoose')
@@ -9,7 +8,6 @@ const pageRoute = require('./routes/pageRoutes')
 const authRoute = require('./routes/authRoutes')
 const dbURI = 'mongodb://localhost/jwt';
 const cookieParser = require('cookie-parser')
-
 // Middlewares 
 app.use(express.static('public'))
 app.use(express.json())
